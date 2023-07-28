@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
-const { URL_PATTERN } = require('../config');
+const { URL_PATTERN } = require('../utils/constants');
 
 const {
   getMovies,

@@ -1,9 +1,11 @@
 require('dotenv').config();
 
 const express = require('express');
+const helmet = require('helmet');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const cors = require('cors');
+const rateLimiter = require('./middlewares/rateLimiter');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const routes = require('./routes/index');
@@ -20,9 +22,13 @@ mongoose
   .then(() => console.log('MongoDB connected'))
   .catch((err) => console.log(err));
 
+app.use(helmet());
+
 app.use(express.json());
 
 app.use(requestLogger); // подключаем логгер запросов
+
+app.use(rateLimiter);
 
 app.get('/crash-test', () => {
   setTimeout(() => {
